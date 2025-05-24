@@ -1,28 +1,26 @@
 using UnityEngine;
-using System.Collections;
 
-public class Move : MonoBehaviour {
-    bool facingRight;
-    // Use this for initialization
-    void Start () {
+public class PlayerMovement : MonoBehaviour
+{
+    public float moveSpeed = 5f; // Скорость перемещения персонажа
+    private Rigidbody2D rb; // Ссылка на Rigidbody2D
+    private Vector2 movement; // Вектор движения
 
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody2D>(); // Получаем компонент Rigidbody2D
     }
 
-    // Update is called once per frame
-    void Update () {
-       if (Input.GetKeyDown (KeyCode.A)) {
-         transform.right = new Vector3(-1, 0, 0);
-         facingRight = false;
-       }
-       else if (Input.GetKeyDown (KeyCode.D)) {
-         transform.right = new Vector3(1, 0, 0);
-         facingRight = true;
-       }
-       float translate = Input.GetAxis("Horizontal");
+    private void Update()
+    {
+        // Получаем ввод с клавиатуры
+        movement.x = Input.GetAxisRaw("Horizontal"); // Влево/вправо
+        movement.y = Input.GetAxisRaw("Vertical"); // Вверх/вниз
+    }
 
-       if(!facingRight)
-         transform.Translate (Vector3.right * -translate * 5 * Time.deltaTime);
-       else
-         transform.Translate (Vector3.right * translate * 5 * Time.deltaTime);
+    private void FixedUpdate()
+    {
+        // Перемещаем персонажа
+        rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
 }
