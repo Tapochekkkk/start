@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 0fe9e59cbdec1eb4c99af351b0df9c35
+guid: c7e6731e90fadf148afe263234cc151f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7929981740504191945
-    second: png-klev-club-w6ea-p-shipi-dlya-igri-png-15_0
+      213: -8993458457378146131
+    second: "\u0437\u0435\u043B\u0451\u043D\u044B\u0439 \u043A\u043B\u044E\u0447_0"
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 80
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: png-klev-club-w6ea-p-shipi-dlya-igri-png-15_0
+      name: "\u0437\u0435\u043B\u0451\u043D\u044B\u0439 \u043A\u043B\u044E\u0447_0"
       rect:
         serializedVersion: 2
-        x: 29
-        y: 0
-        width: 132
-        height: 171
+        x: 22
+        y: 100
+        width: 1872
+        height: 719
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -114,8 +114,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9c3161ec064fc0e60800000000000000
-      internalID: 7929981740504191945
+      spriteID: da83eb1be21d03380800000000000000
+      internalID: -8993458457378146131
       vertices: []
       indices: 
       edges: []
@@ -130,8 +130,7 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      png-klev-club-w6ea-p-shipi-dlya-igri-png-15_0: 7929981740504191945
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
