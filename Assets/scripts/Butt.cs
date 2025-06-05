@@ -1,61 +1,154 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AdvancedDoorController : MonoBehaviour
+public class TripleCharacterDoorSystem : MonoBehaviour
 {
-    [Header("UI Elements")]
-    public GameObject buttonPanel;
-    public Button door1Button;
-    public Button door2Button;
+    [Header("UI Settings")]
+    public GameObject selectionPanel;
+    public Button redDoorButton;
+    public Button blueDoorButton;
+    public Button defaultDoorButton;
+    public Text statusText;
 
     [Header("Door Colliders")]
-    public Collider2D door1Collider; // Коллайдер первой двери
-    public Collider2D door2Collider; // Коллайдер второй двери
+    public Collider2D redDoorCollider;
+    public Collider2D blueDoorCollider;
+    public Collider2D defaultDoorCollider;
 
+    [Header("Character Models")]
+    public GameObject defaultModel;
+    public GameObject redModel;
+    public GameObject blueModel;
+
+    [Header("Effects")]
+    public float switchDelay = 0.3f;
+    public ParticleSystem transformEffect;
+    public AudioClip transformSound;
+
+    private enum CharacterForm { Default, Red, Blue }
+    private CharacterForm currentForm = CharacterForm.Default;
     private bool isPanelActive = false;
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            ToggleButtonPanel();
+            ToggleSelectionPanel();
         }
     }
 
     void Start()
     {
-        // Инициализация
-        buttonPanel.SetActive(false);
-        
-        // Назначаем действия для кнопок
-        door1Button.onClick.AddListener(() => ToggleDoors(true));
-        door2Button.onClick.AddListener(() => ToggleDoors(false));
+        InitializeSystem();
     }
 
-    void ToggleButtonPanel()
+    void InitializeSystem()
+    {
+        selectionPanel.SetActive(false);
+        redModel.SetActive(false);
+        blueModel.SetActive(false);
+        defaultModel.SetActive(true);
+
+        redDoorButton.onClick.AddListener(() => SelectForm(CharacterForm.Red));
+        blueDoorButton.onClick.AddListener(() => SelectForm(CharacterForm.Blue));
+        defaultDoorButton.onClick.AddListener(() => SelectForm(CharacterForm.Default));
+    }
+
+    void ToggleSelectionPanel()
     {
         isPanelActive = !isPanelActive;
-        buttonPanel.SetActive(isPanelActive);
-        
-        // Пауза игры при открытом меню (опционально)
+        selectionPanel.SetActive(isPanelActive);
         Time.timeScale = isPanelActive ? 0f : 1f;
+        UpdateStatusText();
     }
 
-    void ToggleDoors(bool door1Active)
+    void SelectForm(CharacterForm newForm)
     {
-        // Если door1Active = true, то включаем коллайдер у door1 и выключаем у door2
-        door1Collider.enabled = door1Active;
-        door2Collider.enabled = !door1Active;
-        
-        Debug.Log(door1Active ? "Дверь 1 активна, дверь 2 неактивна" : "Дверь 2 активна, дверь 1 неактивна");
-        
+        if (newForm != currentForm)
+        {
+            currentForm = newForm;
+            Invoke("SwitchCharacterModel", switchDelay);
+            UpdateDoors();
+            PlayEffects();
+        }
         ClosePanel();
+    }
+
+    void SwitchCharacterModel()
+    {
+        defaultModel.SetActive(false);
+        redModel.SetActive(false);
+        blueModel.SetActive(false);
+
+        switch (currentForm)
+        {
+            case CharacterForm.Red:
+                redModel.SetActive(true);
+                break;
+            case CharacterForm.Blue:
+                blueModel.SetActive(true);
+                break;
+            default:
+                defaultModel.SetActive(true);
+                break;
+        }
+    }
+
+    void UpdateDoors()
+    {
+        redDoorCollider.enabled = false;
+        blueDoorCollider.enabled = false;
+        defaultDoorCollider.enabled = false;
+
+        switch (currentForm)
+        {
+            case CharacterForm.Red:
+                redDoorCollider.enabled = true;
+                break;
+            case CharacterForm.Blue:
+                blueDoorCollider.enabled = true;
+                break;
+            default:
+                defaultDoorCollider.enabled = true;
+                break;
+        }
+    }
+
+    void PlayEffects()
+    {
+        if (transformEffect != null)
+        {
+            transformEffect.Play();
+        }
+
+        if (transformSound != null)
+        {
+            AudioSource.PlayClipAtPoint(transformSound, transform.position);
+        }
+    }
+
+    void UpdateStatusText()
+    {
+        string formName = "";
+        switch (currentForm)
+        {
+            case CharacterForm.Red:
+                formName = "Красная форма";
+                break;
+            case CharacterForm.Blue:
+                formName = "Синяя форма";
+                break;
+            default:
+                formName = "Обычная форма";
+                break;
+        }
+        statusText.text = $"Текущая форма: {formName}\nВыберите новую форму:";
     }
 
     void ClosePanel()
     {
         isPanelActive = false;
-        buttonPanel.SetActive(false);
+        selectionPanel.SetActive(false);
         Time.timeScale = 1f;
     }
 }
