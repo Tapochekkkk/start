@@ -12,6 +12,11 @@ public class AdvancedDoorController : MonoBehaviour
     public Collider2D door1Collider; // Коллайдер первой двери
     public Collider2D door2Collider; // Коллайдер второй двери
 
+    [Header("Player Models")]
+    public GameObject defaultPlayerModel;
+    public GameObject door1PlayerModel;
+    public GameObject door2PlayerModel;
+
     private bool isPanelActive = false;
 
     void Update()
@@ -30,6 +35,11 @@ public class AdvancedDoorController : MonoBehaviour
         // Назначаем действия для кнопок
         door1Button.onClick.AddListener(() => ToggleDoors(true));
         door2Button.onClick.AddListener(() => ToggleDoors(false));
+        
+        // Активируем дефолтную модель и деактивируем остальные
+        defaultPlayerModel.SetActive(true);
+        door1PlayerModel.SetActive(false);
+        door2PlayerModel.SetActive(false);
     }
 
     void ToggleButtonPanel()
@@ -43,9 +53,23 @@ public class AdvancedDoorController : MonoBehaviour
 
     void ToggleDoors(bool door1Active)
     {
-        // Если door1Active = true, то включаем коллайдер у door1 и выключаем у door2
+        // Управление коллайдерами дверей
         door1Collider.enabled = door1Active;
         door2Collider.enabled = !door1Active;
+        
+        // Смена модели персонажа
+        if (door1Active)
+        {
+            defaultPlayerModel.SetActive(false);
+            door1PlayerModel.SetActive(true);
+            door2PlayerModel.SetActive(false);
+        }
+        else
+        {
+            defaultPlayerModel.SetActive(false);
+            door1PlayerModel.SetActive(false);
+            door2PlayerModel.SetActive(true);
+        }
         
         Debug.Log(door1Active ? "Дверь 1 активна, дверь 2 неактивна" : "Дверь 2 активна, дверь 1 неактивна");
         
